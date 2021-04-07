@@ -1,26 +1,52 @@
 public class Field {
-	enum Type {empty, start, finish, trap}
+	public enum Type {empty, start, finish, trap}
+	public enum Wall {left, top, right, bottom}
 	
-	public int x;
-	public int y;
+	private Type type;
+	private boolean[] walls;
 	
-	public Field(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Field(Type type) {
+		this.type = type;
+		walls = new boolean[4];
 	}
 	
-	public int mapX() {
-		return x*2-1;
-	}
-	public int mapY() {
-		return y*2-1;
+	public void setWall(Wall wall, boolean state) {
+		walls[wall.ordinal()] = state;
 	}
 	
-	public static byte type2Byte(Type type) {
-		if(type == Field.Type.empty) return 0;
-		if(type == Field.Type.trap) return 21;
-		if(type == Field.Type.start) return 22;
-		if(type == Field.Type.finish) return 23;
+	public boolean hasWall(Wall wall) {
+		return walls[wall.ordinal()];
+	}
+	
+	public void setType(Type type) {
+		this.type = type;
+	}
+	
+	public void setTrap() {
+		setType(Type.trap);
+	}
+	
+	public Type getType() {
+		return type;
+	}
+	
+	public boolean hasType(Type type) {
+		return this.type == type;
+	}
+	
+	public boolean isEmpty() {
+		return hasType(Type.empty);
+	}
+	
+	public byte toByte() {
+		switch(type) {
+		case start:
+			return 22;
+		case finish:
+			return 23;
+		case trap:
+			return 21;
+		}
 		return 0;
 	}
 }
